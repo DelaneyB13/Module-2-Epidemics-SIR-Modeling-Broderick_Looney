@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 #%% define drug models
 
 # define toxicity levels for each drug (lambda)
-metformin_lambda = 0.5
+metformin_lambda = 0.2
 
-lisinopril_lambda = 0.8
+lisinopril_lambda = 0.6
 
-escitalopram_lambda = 0.3
+escitalopram_lambda = 0.9
 
 def metformin(x):   # mild toxicity, moderate efficacy
     efficacy = 0.8 * np.exp(-0.1*(x-5)**2)
