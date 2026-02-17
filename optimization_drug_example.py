@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 #%% define drug models
 
 # define toxicity levels for each drug (lambda)
-metformin_lambda = 0.2
+metformin_lambda = 0.7
 
-lisinopril_lambda = 0.6
+lisinopril_lambda = 0.8
 
-escitalopram_lambda = 0.9
+escitalopram_lambda = 0.6
 
 def metformin(x):   # mild toxicity, moderate efficacy
     efficacy = 0.8 * np.exp(-0.1*(x-5)**2)
@@ -34,11 +34,13 @@ fig, ax = plt.subplots(figsize=(10, 6))
 plt.plot(x, metformin(x), label='Metformin', color='blue')
 plt.plot(x, lisinopril(x), label='Lisinopril', color='orange')
 plt.plot(x, escitalopram(x), label='Escitalopram', color='green')
+plt.plot(x, metformin(x)+lisinopril(x)+escitalopram(x), label='Combined Effect', color='red', linestyle='--')
 plt.title('Drug Efficacy vs Dosage')
 plt.xlabel('Dosage (mg)')
 plt.ylabel('Net Effect')
 plt.legend()
 plt.show()
+
 
 # %% Find optimal dosages for each drug
 
@@ -117,3 +119,5 @@ print(f"Newton's Method - Optimal Lisinopril Effect: {opt_effect_lisinopril_nm*1
 opt_dose_escitalopram_nm, opt_effect_escitalopram_nm = newtons_method(escitalopram, x0=1.0)
 print(f"Newton's Method - Optimal Escitalopram Dose: {opt_dose_escitalopram_nm:.2f} mg")
 print(f"Newton's Method - Optimal Escitalopram Effect: {opt_effect_escitalopram_nm*100:.2f}%")
+
+list = [i for i in range(1, 16)]
