@@ -38,6 +38,7 @@ plt.title('Drug Efficacy vs Dosage')
 plt.xlabel('Dosage (mg)')
 plt.ylabel('Net Effect')
 plt.legend()
+plt.show()
 
 # %% Find optimal dosages for each drug
 
