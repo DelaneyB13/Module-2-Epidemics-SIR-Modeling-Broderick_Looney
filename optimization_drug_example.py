@@ -85,7 +85,8 @@ print(f"Steepest Ascent Method - Optimal Escitalopram Effect: {opt_effect_escita
 def second_derivative(f, x, h=1e-4):
     """Central difference approximation for f''(x)."""
     return (f(x + h) - 2*f(x) + f(x - h)) / (h**2)
-
+def combined_drug(x):
+    return metformin(x) + lisinopril(x) + escitalopram(x)
 def newtons_method(f, x0, tol=1e-6, max_iter=1000):
     x = x0
     for i in range(max_iter):
@@ -103,7 +104,11 @@ def newtons_method(f, x0, tol=1e-6, max_iter=1000):
             break
             
         x = x_new
+    print("Optimal dose for combined drug:", opt_dose_combined_nm)
     return x, f(x)
+
+newtons_method(combined_drug, x0=1.0)
+
 
 # metformin
 opt_dose_metformin_nm, opt_effect_metformin_nm = newtons_method(metformin, x0=1.0)
