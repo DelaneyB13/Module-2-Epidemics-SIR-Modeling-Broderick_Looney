@@ -80,7 +80,7 @@ print(f"Steepest Ascent Method - Optimal Escitalopram Dose: {opt_dose_escitalopr
 print(f"Steepest Ascent Method - Optimal Escitalopram Effect: {opt_effect_escitalopram*100:.2f}%")
 
 # %% Newton's method
-
+#Apply steepest ascent and Newton’s method to this function to quantify the dosage of this combined optimal effect.
 # requires second derivative
 def second_derivative(f, x, h=1e-4):
     """Central difference approximation for f''(x)."""
@@ -104,10 +104,11 @@ def newtons_method(f, x0, tol=1e-6, max_iter=1000):
             break
             
         x = x_new
-    print("Optimal dose for combined drug:", opt_dose_combined_nm)
+    print("Optimal dose for combined drug:", x)
     return x, f(x)
 
 newtons_method(combined_drug, x0=1.0)
+
 
 
 # metformin
@@ -124,5 +125,14 @@ print(f"Newton's Method - Optimal Lisinopril Effect: {opt_effect_lisinopril_nm*1
 opt_dose_escitalopram_nm, opt_effect_escitalopram_nm = newtons_method(escitalopram, x0=1.0)
 print(f"Newton's Method - Optimal Escitalopram Dose: {opt_dose_escitalopram_nm:.2f} mg")
 print(f"Newton's Method - Optimal Escitalopram Effect: {opt_effect_escitalopram_nm*100:.2f}%")
+
+#Choose one drug to modify to find the best lambda value to achieve this optimal dose (or closest to it). Hint: You can create a for-loop to test multiple lambda values at once, re-calculate the optimum values (using either method), and compare the values to the combined effect’s optimal dose to find the best dose for that drug.
+for lambda_val in np.linspace(0.5, 0.9, 5):
+    metformin_lambda = lambda_val
+    opt_dose_metformin, opt_effect_metformin = steepest_ascent(metformin, x0=1.0)
+    print(f"Lambda: {lambda_val:.2f} - Optimal Metformin Dose: {opt_dose_metformin:.2f} mg - Effect: {opt_effect_metformin*100:.2f}%")
+
+    
+
 
 list = [i for i in range(1, 16)]
