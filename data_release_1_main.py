@@ -1,3 +1,4 @@
+from data_release_1 import *
 import csv 
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
