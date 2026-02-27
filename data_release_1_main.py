@@ -1,7 +1,7 @@
 from data_release_1 import *
 import csv 
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
+from scipy.optimize import curve_fit
 import numpy as np
 from scipy import stats
 import statistics
@@ -32,22 +32,38 @@ for virus_count in Virus_count.all_virus_count: #iterating through all the virus
     day.append(float(getattr(virus_count, "day")))
     active_reported_daily_cases.append(float(getattr(virus_count, "active_reported_daily_cases")))  
 
-X = np.array(day)  # Independent variable
-y = np.array(active_reported_daily_cases)   # Dependent variable
+# Convert lists to NumPy arrays
+X = np.array(day)
+y = np.array(active_reported_daily_cases)
 
-model = LinearRegression()
-model.fit(np.array(X).reshape(-1, 1), y)
+# Define the exponential function to fit the data
+def exponential_func(x, I0, r):
+    return I0 * np.exp(r * x)
 
-slope = model.coef_[0] # Get the slope (coefficient) of the linear regression model
-intercept = model.intercept_ # Get the intercept of the linear regression model 
-r2 = model.score(np.array(X).reshape(-1, 1), y) # Get the R-squared value of the linear regression model
+# Fit the exponential function to the data
+popt, pcov = curve_fit(exponential_func, X, y, p0=(1, 0.1))  # Initial guess for parameters a and b
+print("I0,:", popt[0], "r:", popt[1])
 
-equation = f"y = {slope:.2f}x + {intercept:.2f}\nR^2 = {r2:.2f}" # Create the equation of the line in the form of y = mx + b
-plt.text((X.min() + X.max()) / 2, y.max(), equation, color='red', fontsize=12, ha='center', verticalalignment='top') # Add the equation of the line to the scatter plot
+# Calulate R0 v1
+R0_v1 = 1 + popt[1] * 9 # Assuming an infectious period of 9 days
+print("R0_v1:", R0_v1)
 
-plt.scatter(X, y, color='blue') # Create a scatter plot of day vs active infections
-plt.plot(X, model.predict(np.array(X).reshape(-1, 1)), color='red') # Add the linear regression line to the scatter plot
-plt.xlabel('Day') # Create a label for the x-axis
-plt.ylabel('Active Reported Daily Cases') #create label for y axis
-plt.title('Scatter Plot of Day vs Active Reported Daily Cases') #create title
+#Calculate R0 v2
+g = np.exp(popt[1])
+R0_v2 = np.power(g, 9)
+print("R0_v2:", R0_v2)
+
+#Calculate R0 
+R0 = (R0_v1 + R0_v2) / 2
+print("R0:", R0)
+
+
+# Plot
+plt.scatter(X, y, color='blue', label='All days')
+plt.plot(X, exponential_func(X, *popt), color='red', label='Exponential fit')
+plt.ylabel('Active Reported Daily Cases')
+plt.xlabel('Day')
+plt.title('Scatter Plot of Day vs Active Reported Daily Cases')
+plt.legend()
 plt.show()
+
