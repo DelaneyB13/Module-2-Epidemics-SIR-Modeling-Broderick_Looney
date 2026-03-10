@@ -81,51 +81,49 @@ I = 1
 R = 0
 seir_results = []
 
-for virus_day in Virus_count.all_virus_count:
+S0 = 17899
+E0 = 0
+I0 = 1
+R0 = 0
+
+def seir(t,beta,sigma,gamma,S0,E0,I0,R0):
+
+    for virus_day in Virus_count.all_virus_count:
 
 
-    day = virus_day.get_day()
+        day = virus_day.get_day()
 
-    # Euler derivatives
-    dS = -beta * S * I / N
-    dE = beta * S * I / N - sigma * E
-    dI = sigma * E - gamma * I
-    dR = gamma * I
+        # Euler derivatives
+        dS = -beta * S * I / N
+        dE = beta * S * I / N - sigma * E
+        dI = sigma * E - gamma * I
+        dR = gamma * I
 
-    # Euler updates
-    S = S + h * dS
-    E = E + h * dE
-    I = I + h * dI
-    R = R + h * dR
+        S0 = S
+        # Euler updates
+        S = S + h * dS
+        E = E + h * dE
+        I = I + h * dI
+        R = R + h * dR
 
     seir_results.append((day, S, E, I, R))
     import matplotlib.pyplot as plt
 
-S_list = []
-E_list = []
-I_list = []
-R_list = []
-days = []
+    S_list = []
+    E_list = []
+    I_list = []
+    R_list = []
+    days = []
 
-for virus_day in Virus_count.all_virus_count:
 
-    day = virus_day.get_day()
-
-    dS = -beta * S * I / N
-    dE = beta * S * I / N - sigma * E
-    dI = sigma * E - gamma * I
-    dR = gamma * I
-
-    S = S + h*dS
-    E = E + h*dE
-    I = I + h*dI
-    R = R + h*dR
 
     S_list.append(S)
     E_list.append(E)
     I_list.append(I)
     R_list.append(R)
     days.append(day)
+
+
 
 plt.plot(days, S_list, label="Susceptible")
 plt.plot(days, E_list, label="Exposed")
@@ -138,3 +136,7 @@ plt.title("SEIR Model")
 plt.legend()
 
 plt.show()
+
+
+#Error calculations
+true_peak_infected = 2364
