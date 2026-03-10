@@ -1,5 +1,5 @@
 #AI usage statement: ChatGPT was used to help with the creation of Euler's method
-from data_release_2 import *
+from data_release_1 import *
 import csv 
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -11,7 +11,6 @@ import pandas as pd
 
 #goal is to make a scatter plot showing day vs active infections 
 
-<<<<<<< HEAD:data_release_2_main.py
 #with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     #reader = csv.reader(f)
     #headers = next(reader) # Get the first row to get the headers of the csv
@@ -19,27 +18,13 @@ import pandas as pd
      #   print(h) #show the headers of the csv
 
 with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
-=======
-with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
->>>>>>> cc5000e594f5026314694130f1a1f586c38e188:data_release_1_main.py
     reader = csv.reader(f)
     headers = next(reader) # Get the first row to get the headers of the csv
     for h in headers:
        print(h) #show the headers of the csv
 
-<<<<<<< HEAD:data_release_2_main.py
 #Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
-=======
-#with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
-    #reader = csv.reader(f)
-    #headers = next(reader) # Get the first row to get the headers of the csv
-    #for h in headers:
-     #   print(h) #show the headers of the csv) as f: #opening the csv file to get the headers of the csv file
-
-Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv")
-#Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#1.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
->>>>>>> 0cc5000e594f5026314694130f1a1f586c38e188:data_release_1_main.py
 
 day = [] #creating a list to store the day of each virus_count object
 active_reported_daily_cases = [] #creating a list to store the active reported daily cases of each virus_count object
@@ -84,12 +69,11 @@ plt.legend()
 plt.show()
 
 #Euler's method to find SIER model parameters
-beta = 0.3     # transmission rate
-sigma = 0.2    # incubation rate
-gamma = 0.1    # recovery rate
+beta = 0.277    # transmission rate
+sigma = 0.205    # incubation rate
+gamma = 0.111    # recovery rate
 h = 1          # time step
-
-N = 1000000    # total population
+N = 17900    # total population
 
 S = N - 1
 E = 0
