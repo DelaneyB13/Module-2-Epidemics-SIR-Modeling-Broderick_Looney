@@ -21,7 +21,7 @@ import pandas as pd
 with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
 =======
 with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
->>>>>>> 0cc5000e594f5026314694130f1a1f586c38e188:data_release_1_main.py
+>>>>>>> cc5000e594f5026314694130f1a1f586c38e188:data_release_1_main.py
     reader = csv.reader(f)
     headers = next(reader) # Get the first row to get the headers of the csv
     for h in headers:
