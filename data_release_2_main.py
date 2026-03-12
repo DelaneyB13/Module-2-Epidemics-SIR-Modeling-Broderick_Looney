@@ -11,20 +11,20 @@ import pandas as pd
 
 #goal is to make a scatter plot showing day vs active infections 
 
-#with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
-    #reader = csv.reader(f)
-    #headers = next(reader) # Get the first row to get the headers of the csv
-    #for h in headers:
-     #   print(h) #show the headers of the csv
-
-with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     reader = csv.reader(f)
     headers = next(reader) # Get the first row to get the headers of the csv
     for h in headers:
-       print(h) #show the headers of the csv
+        print(h) #show the headers of the csv
 
-#Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
-Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
+#with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+    #reader = csv.reader(f)
+    #headers = next(reader) # Get the first row to get the headers of the csv
+    #for h in headers:
+       #print(h) #show the headers of the csv
+
+Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+#Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
 
 day = [] #creating a list to store the day of each virus_count object
 active_reported_daily_cases = [] #creating a list to store the active reported daily cases of each virus_count object
@@ -68,73 +68,113 @@ plt.title('Scatter Plot of Day vs Active Reported Daily Cases')
 plt.legend()
 plt.show()
 
-#Euler's method to find SIER model parameters
-beta = 0.277    # transmission rate
-sigma = 0.205    # incubation rate
-gamma = 0.111    # recovery rate
-h = 1          # time step
-N = 17900    # total population
+S0 = 17899
+E0 = 0
+I0 = 1
+R0 = 0
+day = 70
+N = 17900
+sigma = 0.205
+beta = 0.277
+gamma = 1/9
+def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
+    S_list = []
+    E_list = []
+    I_list = []
+    R_list = []
+    
+    S_list.append(S0)
+    E_list.append(E0)
+    I_list.append(I0)
+    R_list.append(R0)
 
-S = N - 1
-E = 0
-I = 1
-R = 0
-seir_results = []
+    for virus_day in range(day):
+        h = 1
+        # Euler derivatives
+        dS = -beta * S_list[virus_day] * I_list[virus_day] / N
+        dE = beta * S_list[virus_day] * I_list[virus_day] / N - sigma * E_list[virus_day]
+        dI = sigma * E_list[virus_day] - gamma * I_list[virus_day]
+        dR = gamma * I_list[virus_day]
 
-for virus_day in Virus_count.all_virus_count:
+        # Euler updates
+        S_list.append(S_list[virus_day] + h * dS)
+        E_list.append(E_list[virus_day] + h * dE)
+        I_list.append(I_list[virus_day] + h * dI)
+        R_list.append(R_list[virus_day] + h * dR)
+
+    return S_list, E_list, I_list, R_list
+#data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+data = data["active reported daily cases"].tolist()
+
+def grid_search(day, N, S0, E0, I0, R0, data):
+    # parameter grids
+    beta_values = np.linspace(0.2, 0.7)
+    sigma_values = np.linspace(0.1, 0.3)
+    gamma_values = np.linspace(0.05, 0.25)
+
+    # step size for Euler
+    h = 1
+
+    # storage for search results
+    SSE_list = []
+    beta_list = []
+    sigma_list = []
+    gamma_list = []
 
 
-    day = virus_day.get_day()
+    best_SSE = float("inf")
+    best_beta = None
+    best_sigma = None
+    best_gamma = None
 
-    # Euler derivatives
-    dS = -beta * S * I / N
-    dE = beta * S * I / N - sigma * E
-    dI = sigma * E - gamma * I
-    dR = gamma * I
+    # iterate through parameter combinations
+    for b in beta_values:
+        for s in sigma_values:
+            for g in gamma_values:
+                # run Euler method for these parameters
+                S_list, E_list, I_list, R_list = seir(day, b, s, g, S0, E0, I0, R0, N, h)
 
-    # Euler updates
-    S = S + h * dS
-    E = E + h * dE
-    I = I + h * dI
-    R = R + h * dR
+                model_I = I_list[: len(data)]
 
-    seir_results.append((day, S, E, I, R))
-    import matplotlib.pyplot as plt
+                # compute sum of squared errors
+                errors = [(model_I[i] - data[i]) ** 2 for i in range(len(model_I))]
+                sse = sum(errors)
 
-S_list = []
-E_list = []
-I_list = []
-R_list = []
-days = []
+                # record results
+                SSE_list.append(sse)
+                beta_list.append(b)
+                sigma_list.append(s)
+                gamma_list.append(g)
 
-for virus_day in Virus_count.all_virus_count:
+                # update best if this is lowest SSE so far
+                if sse < best_SSE:
+                    best_SSE = sse
+                    best_beta = b
+                    best_sigma = s
+                    best_gamma = g
+    
+    return best_beta, best_sigma, best_gamma, best_SSE, SSE_list, beta_list, sigma_list, gamma_list
 
-    day = virus_day.get_day()
+# perform grid search using defined parameters
+best_beta, best_sigma, best_gamma, best_SSE, SSE_list, beta_list, sigma_list, gamma_list = \
+    grid_search(day, N, S0, E0, I0, R0, data)
 
-    dS = -beta * S * I / N
-    dE = beta * S * I / N - sigma * E
-    dI = sigma * E - gamma * I
-    dR = gamma * I
+# print out best parameters and associated SSE
+print(f"Best parameters from grid search:\n  beta = {best_beta}\n  sigma = {best_sigma}\n  gamma = {best_gamma}\n  SSE = {best_SSE}")
 
-    S = S + h*dS
-    E = E + h*dE
-    I = I + h*dI
-    R = R + h*dR
+# generate model output with optimal parameters
+S_list_opt, E_list_opt, I_list_opt, R_list_opt = seir(day, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
 
-    S_list.append(S)
-    E_list.append(E)
-    I_list.append(I)
-    R_list.append(R)
-    days.append(day)
-
-plt.plot(days, S_list, label="Susceptible")
-plt.plot(days, E_list, label="Exposed")
-plt.plot(days, I_list, label="Infectious")
-plt.plot(days, R_list, label="Recovered")
+# plot the optimal SEIR curves
+plt.plot(range(day+1), S_list_opt, label="Susceptible")
+plt.plot(range(day+1), E_list_opt, label="Exposed")
+plt.plot(range(day+1), I_list_opt, label="Infectious")
+plt.plot(range(day+1), R_list_opt, label="Recovered")
 
 plt.xlabel("Day")
 plt.ylabel("Population")
-plt.title("SEIR Model")
+plt.title("SEIR Model (best fit)")
 plt.legend()
 
 plt.show()
