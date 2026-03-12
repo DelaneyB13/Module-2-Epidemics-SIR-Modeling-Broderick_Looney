@@ -10,13 +10,13 @@ import pandas as pd
 
 #goal is to make a scatter plot showing day vs active infections 
 
-with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     reader = csv.reader(f)
     headers = next(reader) # Get the first row to get the headers of the csv
     for h in headers:
         print(h) #show the headers of the csv
 
-#Conner change this path to data release 3
+
 
 #with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     #reader = csv.reader(f)
@@ -24,9 +24,9 @@ with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\M
     #for h in headers:
        #print(h) #show the headers of the csv
 
-Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 #Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
-#Conner change this path to data release 3
+
 
 
 day = [] #creating a list to store the day of each virus_count object
@@ -107,10 +107,10 @@ def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
 
     return S_list, E_list, I_list, R_list
 
-#Conner change this path to data release 3 
+
 #data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
 
-data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data = data["active reported daily cases"].tolist()
 
 def grid_search(day, N, S0, E0, I0, R0, data):
@@ -192,3 +192,6 @@ S_ext, E_ext, I_ext, R_ext = seir(extended_days, best_beta, best_sigma, best_gam
 peak_I = max(I_ext)
 peak_day = I_ext.index(peak_I)
 print(f"Extended simulation peak infectious count: {peak_I:.2f} on day {peak_day}")
+
+#end data release 2 
+
