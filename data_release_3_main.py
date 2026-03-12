@@ -194,3 +194,18 @@ print(f"Extended simulation peak infectious count: {peak_I:.2f} on day {peak_day
 
 #end data release 2 
 
+data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+data_3 = data_3["active reported daily cases"].tolist()
+
+# compare the full release #3 dataset against the SEIR model using best parameters
+model_S3, model_E3, model_I3, model_R3 = seir(len(data_3), best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
+
+plt.figure()
+plt.plot(range(len(data_3)), model_I3[:len(data_3)], label="Model Infectious")
+plt.scatter(range(len(data_3)), data_3, color='red', label="Observed active cases")
+plt.xlabel("Day")
+plt.ylabel("Infectious / Reported Active Cases")
+plt.title("Model vs Data (Release #3)")
+plt.legend()
+plt.show()
+
