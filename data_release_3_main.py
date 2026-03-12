@@ -104,6 +104,7 @@ def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
 
     return S_list, E_list, I_list, R_list
 data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data = data["active reported daily cases"].tolist()
 
 def grid_search(day,N,S0,E0,I0,R0,data):
@@ -121,6 +122,13 @@ def grid_search(day,N,S0,E0,I0,R0,data):
                 beta_list.append(b)
                 sigma_list.append(s)
                 gamma_list.append(g)
+
+
+
+
+
+
+     
                 
 '''
 plt.plot(day, S_list, label="Susceptible")
