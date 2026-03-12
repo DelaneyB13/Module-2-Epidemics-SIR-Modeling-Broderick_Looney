@@ -8,7 +8,6 @@ import statistics
 import pandas as pd 
 #importing  the necessary libraries for the analysis of the virus data 
 
-#goal is to make a scatter plot showing day vs active infections 
 
 with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     reader = csv.reader(f)
