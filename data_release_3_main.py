@@ -68,75 +68,69 @@ plt.title('Scatter Plot of Day vs Active Reported Daily Cases')
 plt.legend()
 plt.show()
 
-#Euler's method to find SIER model parameters
-beta = 0.277    # transmission rate
-sigma = 0.205    # incubation rate
-gamma = 0.111    # recovery rate
-h = 1          # time step
-N = 17900    # total population
-
-S = N - 1
-E = 0
-I = 1
-R = 0
-seir_results = []
-
 S0 = 17899
 E0 = 0
 I0 = 1
 R0 = 0
-
-def seir(t,beta,sigma,gamma,S0,E0,I0,R0):
-
-    for virus_day in Virus_count.all_virus_count:
-
-
-        day = virus_day.get_day()
-
-        # Euler derivatives
-        dS = -beta * S * I / N
-        dE = beta * S * I / N - sigma * E
-        dI = sigma * E - gamma * I
-        dR = gamma * I
-
-        S0 = S
-        # Euler updates
-        S = S + h * dS
-        E = E + h * dE
-        I = I + h * dI
-        R = R + h * dR
-
-    seir_results.append((day, S, E, I, R))
-    import matplotlib.pyplot as plt
-
+day = 70
+N = 17900
+sigma = 0.205
+beta = 0.277
+gamma = 1/9
+def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
     S_list = []
     E_list = []
     I_list = []
     R_list = []
-    days = []
+    
+    S_list.append(S0)
+    E_list.append(E0)
+    I_list.append(I0)
+    R_list.append(R0)
 
+    for virus_day in range(day):
+        h = 1
+        # Euler derivatives
+        dS = -beta * S_list[virus_day] * I_list[virus_day] / N
+        dE = beta * S_list[virus_day] * I_list[virus_day] / N - sigma * E_list[virus_day]
+        dI = sigma * E_list[virus_day] - gamma * I_list[virus_day]
+        dR = gamma * I_list[virus_day]
 
+        # Euler updates
+        S_list.append(S_list[virus_day] + h * dS)
+        E_list.append(E_list[virus_day] + h * dE)
+        I_list.append(I_list[virus_day] + h * dI)
+        R_list.append(R_list[virus_day] + h * dR)
 
-    S_list.append(S)
-    E_list.append(E)
-    I_list.append(I)
-    R_list.append(R)
-    days.append(day)
+    return S_list, E_list, I_list, R_list
+data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+data = data["active reported daily cases"].tolist()
 
+def grid_search(day,N,S0,E0,I0,R0,data):
+    beta = np.linspace(0.2, 0.7)
+    sigma = np.linspace(0.1, 0.3)
+    gamma = np.linspace(0.05, 0.25)
+    SSE = []
+    beta_list = []
+    sigma_list = []
+    gamma_list = []
+    for b in beta:
+        for s in sigma:
+            for g in gamma:
+                seir(day,b,s,g,S0,E0,I0,R0,N,h)
+                beta_list.append(b)
+                sigma_list.append(s)
+                gamma_list.append(g)
+                
+'''
+plt.plot(day, S_list, label="Susceptible")
+plt.plot(day, E_list, label="Exposed")
+plt.plot(day, I_list, label="Infectious")
+plt.plot(day, R_list, label="Recovered")
 
+plt.xlabel("Day")
+plt.ylabel("Population")
+plt.title("SEIR Model")
+plt.legend()
 
-    plt.plot(days, S_list, label="Susceptible")
-    plt.plot(days, E_list, label="Exposed")
-    plt.plot(days, I_list, label="Infectious")
-    plt.plot(days, R_list, label="Recovered")
-
-    plt.xlabel("Day")
-    plt.ylabel("Population")
-    plt.title("SEIR Model")
-    plt.legend()
-
-    plt.show()
-
-
-#Error calculations
-true_peak_infected = 2364
+plt.show()'''
