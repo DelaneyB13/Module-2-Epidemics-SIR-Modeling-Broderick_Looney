@@ -125,17 +125,17 @@ def seir(t,beta,sigma,gamma,S0,E0,I0,R0):
 
 
 
-plt.plot(days, S_list, label="Susceptible")
-plt.plot(days, E_list, label="Exposed")
-plt.plot(days, I_list, label="Infectious")
-plt.plot(days, R_list, label="Recovered")
+    plt.plot(days, S_list, label="Susceptible")
+    plt.plot(days, E_list, label="Exposed")
+    plt.plot(days, I_list, label="Infectious")
+    plt.plot(days, R_list, label="Recovered")
 
-plt.xlabel("Day")
-plt.ylabel("Population")
-plt.title("SEIR Model")
-plt.legend()
+    plt.xlabel("Day")
+    plt.ylabel("Population")
+    plt.title("SEIR Model")
+    plt.legend()
 
-plt.show()
+    plt.show()
 
 
 #Error calculations
