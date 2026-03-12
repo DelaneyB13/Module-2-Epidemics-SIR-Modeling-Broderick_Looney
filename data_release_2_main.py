@@ -178,3 +178,11 @@ plt.title("SEIR Model (best fit)")
 plt.legend()
 
 plt.show()
+
+#peak analysis after extending days
+extended_days = 200  # run model well past the observed 70 days
+S_ext, E_ext, I_ext, R_ext = seir(extended_days, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
+
+peak_I = max(I_ext)
+peak_day = I_ext.index(peak_I)
+print(f"Extended simulation peak infectious count: {peak_I:.2f} on day {peak_day}")
