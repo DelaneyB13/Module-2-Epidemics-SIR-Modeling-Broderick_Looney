@@ -23,7 +23,7 @@ with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-
     for h in headers:
        print(h) #show the headers of the csv
 
-#Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+#Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#1.csv")
 Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#1.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
 
 day = [] #creating a list to store the day of each virus_count object
