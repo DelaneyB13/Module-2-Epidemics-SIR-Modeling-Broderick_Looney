@@ -9,22 +9,22 @@ import pandas as pd
 #importing  the necessary libraries for the analysis of the virus data 
 
 
-with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+#with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+    #reader = csv.reader(f)
+  #  headers = next(reader) # Get the first row to get the headers of the csv
+   # for h in headers:
+   #     print(h) #show the headers of the csv
+
+
+
+with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     reader = csv.reader(f)
     headers = next(reader) # Get the first row to get the headers of the csv
     for h in headers:
-        print(h) #show the headers of the csv
+       print(h) #show the headers of the csv
 
-
-
-#with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
-    #reader = csv.reader(f)
-    #headers = next(reader) # Get the first row to get the headers of the csv
-    #for h in headers:
-       #print(h) #show the headers of the csv
-
-Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
-#Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
+#Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
 
 
 
@@ -107,9 +107,9 @@ def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
     return S_list, E_list, I_list, R_list
 
 
-#data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
 
-data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data = data["active reported daily cases"].tolist()
 
 def grid_search(day, N, S0, E0, I0, R0, data):
@@ -194,18 +194,23 @@ print(f"Extended simulation peak infectious count: {peak_I:.2f} on day {peak_day
 
 #end data release 2 
 
-data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data_2 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+data_2 = data_2["active reported daily cases"].tolist()
+data_3 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#3.csv")
+#data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
 data_3 = data_3["active reported daily cases"].tolist()
-
 # compare the full release #3 dataset against the SEIR model using best parameters
-model_S3, model_E3, model_I3, model_R3 = seir(len(data_3), best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
+model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
 
+x = np.arange(1, 123)  # Days 1 to 121
 plt.figure()
-plt.plot(range(len(data_3)), model_I3[:len(data_3)], label="Model Infectious")
-plt.scatter(range(len(data_3)), data_3, color='red', label="Observed active cases")
+plt.plot(x, model_I2, label="Model Infectious")
+plt.scatter(range(len(data_2)), data_2, color='red', label="Observed active cases")
+#plt.scatter(range(len(data_3)), data_3, color='green', label="Observed active cases (Release #3)")
 plt.xlabel("Day")
 plt.ylabel("Infectious / Reported Active Cases")
-plt.title("Model vs Data (Release #3)")
+plt.title("Preditced Infectious Model vs Data Release #2")
+plt.axvline(x=73, color='gray', linestyle='--', label="Peak Infected Population (Day 73)")
 plt.legend()
 plt.show()
-
