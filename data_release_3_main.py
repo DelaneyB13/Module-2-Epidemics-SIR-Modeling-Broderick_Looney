@@ -9,22 +9,22 @@ import pandas as pd
 #importing  the necessary libraries for the analysis of the virus data 
 
 
-with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
-    reader = csv.reader(f)
-    headers = next(reader) # Get the first row to get the headers of the csv
-    for h in headers:
-       print(h) #show the headers of the csv
-
-
-
-#with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+#with open(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
     #reader = csv.reader(f)
     #headers = next(reader) # Get the first row to get the headers of the csv
     #for h in headers:
        #print(h) #show the headers of the csv
 
-Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
-#Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
+
+
+with open("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv", newline="") as f: #opening the csv file to get the headers of the csv file
+    reader = csv.reader(f)
+    headers = next(reader) # Get the first row to get the headers of the csv
+    for h in headers:
+       print(h) #show the headers of the csv
+
+#Virus_count.instantiate_from_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+Virus_count.instantiate_from_csv(r"/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")#instantiating virus_count objects from the csv file using the class method instantiate_from_csv
 
 
 
@@ -107,9 +107,9 @@ def seir(day,beta,sigma,gamma,S0,E0,I0,R0,N,h):
     return S_list, E_list, I_list, R_list
 
 
-#data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+data = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
 
-data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data = data["active reported daily cases"].tolist()
 
 def grid_search(day, N, S0, E0, I0, R0, data):
@@ -206,11 +206,11 @@ relative_error_day = abs(Et_day) / abs(true_day) * 100
 print(f"Relative error of the peak day: {relative_error_day:.2f}%")
 #end data release 2 
 
-#data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
-data_2 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data_2 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data_2 = data_2["active reported daily cases"].tolist()
-#data_3 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#3.csv")
-data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+data_3 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#3.csv")
+#data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
 data_3 = data_3["active reported daily cases"].tolist()
 # compare the full release #3 dataset against the SEIR model using best parameters
 model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
@@ -243,7 +243,10 @@ S0_VT = 31035
 E0_VT = E0
 I0_VT = 1
 R0_VT = 0
-model_S_VT, model_E_VT, model_I_VT, model_R_VT = seir(day, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N, h=1)
+
+N_VT = S0_VT + E0_VT + I0_VT + R0_VT
+
+model_S_VT, model_E_VT, model_I_VT, model_R_VT = seir(day, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N_VT, h=1)
 
 x = np.arange(1, 72)  # Days 1 to 71
 plt.figure()
@@ -251,6 +254,98 @@ plt.plot(x, model_I_VT, label="Model Infectious (VT)")
 plt.xlabel("Day")
 plt.ylabel("Infectious Population")
 plt.title("Predicted Infectious Model for VT Student Population")
+plt.legend()
+plt.show()
+
+
+
+#Intervention 1: Mask Mandate - reduce beta (Transmission) by 40% vs no intervention, keeping sigma and gamma the same. Model the epidemic for 120 days to see the long-term effects of the mask mandate on the infectious population at VT.
+days_mask = 120
+model_S_VT_long, model_E_VT_long, model_I_VT_long, model_R_VT_long = seir(days_mask, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N_VT, h=1)
+
+day0 = 70
+S_70 = model_S_VT_long[day0]
+E_70 = model_E_VT_long[day0]
+I_70 = model_I_VT_long[day0]
+R_70 = model_R_VT_long[day0]
+
+
+beta_mask = best_beta * 0.6
+days_post70 = days_mask - day0
+
+baseline_segment = model_I_VT_long[day0:days_mask+1]
+
+vaccinated = min(2000, S_70)
+effective_vaccinated = 0.9 * vaccinated
+
+S_70_vax = S_70 - effective_vaccinated
+E_70_vax = E_70
+I_70_vax = I_70
+R_70_vax = R_70 + effective_vaccinated
+
+closure_days = 14
+beta_closure = best_beta * 0.2
+
+S_close, E_close, I_close, R_close = seir(
+    closure_days,
+    beta_closure,
+    best_sigma,
+    best_gamma,
+    S_70,
+    E_70,
+    I_70,
+    R_70,
+    N_VT,
+    h=1
+)
+
+S_84 = S_close[-1]
+E_84 = E_close[-1]
+I_84 = I_close[-1]
+R_84 = R_close[-1]
+
+days_after = days_mask - (day0 + closure_days)
+
+S_after, E_after, I_after, R_after = seir(
+    days_after,
+    best_beta,
+    best_sigma,
+    best_gamma,
+    S_84,
+    E_84,
+    I_84,
+    R_84,
+    N_VT,
+    h=1
+)
+I_school = I_close + I_after[1:]
+model_S_mask, model_E_mask, model_I_mask, model_R_mask = seir(days_post70, beta_mask, best_sigma, best_gamma, S_70, E_70, I_70, R_70, N_VT, h=1)
+
+model_S_vax, model_E_vax, model_I_vax, model_R_vax = seir(
+    days_post70,
+    best_beta,        
+    best_sigma,
+    best_gamma,
+    S_70_vax,
+    E_70_vax,
+    I_70_vax,
+    R_70_vax,
+    N_VT,
+    h=1
+)
+
+
+
+
+x = np.arange(day0, days_mask + 1)  # Days 70 to 120
+plt.figure()
+plt.plot(x, model_I_vax, label="Vaccine Campaign (Day 70)")
+plt.plot(x, baseline_segment, label="Baseline (no intervention)")
+plt.plot(x, model_I_mask, label="Model Infectious with Mask Mandate")
+plt.plot(x, I_school, label="2-Week School Closure")
+plt.xlabel("Day")
+plt.ylabel("Infectious Population")
+plt.title("Interventions starting at Day 70")
 plt.legend()
 plt.show()
 
