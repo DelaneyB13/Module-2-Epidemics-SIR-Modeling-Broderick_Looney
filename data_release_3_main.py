@@ -200,7 +200,10 @@ Et = true - approximate
 relative_error = abs(Et) / abs(true) * 100
 print(f"Relative error of the peak infectious count: {relative_error:.2f}%")
 
-
+true_day = 83 
+Et_day = true_day - peak_day
+relative_error_day = abs(Et_day) / abs(true_day) * 100
+print(f"Relative error of the peak day: {relative_error_day:.2f}%")
 #end data release 2 
 
 data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
