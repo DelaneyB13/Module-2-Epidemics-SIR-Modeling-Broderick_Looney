@@ -206,11 +206,11 @@ relative_error_day = abs(Et_day) / abs(true_day) * 100
 print(f"Relative error of the peak day: {relative_error_day:.2f}%")
 #end data release 2 
 
-data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
-#data_2 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
+#data_2 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#2.csv")
+data_2 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#2.csv")
 data_2 = data_2["active reported daily cases"].tolist()
-data_3 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#3.csv")
-#data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
+#data_3 = pd.read_csv("/Users/connerlooney/Documents/GitHub/Module-2-Epidemics-SIR-Modeling-Broderick_Looney/Data/mystery_virus_daily_active_counts_RELEASE#3.csv")
+data_3 = pd.read_csv(r"C:\Users\dance\OneDrive - University of Virginia\Computational BME\Module-2-Epidemics-SIR-Modeling-Broderick_Looney\Data\mystery_virus_daily_active_counts_RELEASE#3.csv")
 data_3 = data_3["active reported daily cases"].tolist()
 # compare the full release #3 dataset against the SEIR model using best parameters
 model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
@@ -218,11 +218,11 @@ model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_g
 x = np.arange(1, 123)  # Days 1 to 121
 plt.figure()
 plt.plot(x, model_I2, label="Model Infectious")
-plt.scatter(range(len(data_2)), data_2, color='red', label="Observed active cases")
-#plt.scatter(range(len(data_3)), data_3, color='green', label="Observed active cases (Release #3)")
+#plt.scatter(range(len(data_2)), data_2, color='red', label="Observed active cases")
+plt.scatter(range(len(data_3)), data_3, color='green', label="Observed active cases (Release #3)")
 plt.xlabel("Day")
 plt.ylabel("Infectious / Reported Active Cases")
-plt.title("Preditced Infectious Model vs Data Release #2")
+plt.title("Predicted Infectious Model vs Data Release #3")
 plt.axvline(x=73, color='gray', linestyle='--', label="Peak Infected Population (Day 73)")
 plt.legend()
 plt.show()
