@@ -218,7 +218,18 @@ model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_g
 x = np.arange(1, 123)  # Days 1 to 121
 plt.figure()
 plt.plot(x, model_I2, label="Model Infectious")
-#plt.scatter(range(len(data_2)), data_2, color='red', label="Observed active cases")
+plt.scatter(range(len(data_2)), data_2, color='red', label="Observed active cases")
+plt.xlabel("Day")
+plt.ylabel("Infectious / Reported Active Cases")
+plt.title("Predicted Infectious Model vs Data Release #2")
+plt.axvline(x=73, color='gray', linestyle='--', label="Peak Infected Population (Day 73)")
+plt.legend()
+plt.show()
+
+
+x = np.arange(1, 123)  # Days 1 to 121
+plt.figure()
+plt.plot(x, model_I2, label="Model Infectious")
 plt.scatter(range(len(data_3)), data_3, color='green', label="Observed active cases (Release #3)")
 plt.xlabel("Day")
 plt.ylabel("Infectious / Reported Active Cases")
@@ -226,6 +237,5 @@ plt.title("Predicted Infectious Model vs Data Release #3")
 plt.axvline(x=73, color='gray', linestyle='--', label="Peak Infected Population (Day 73)")
 plt.legend()
 plt.show()
-
 
 #For recommending interventions at VT: VT student population as S0 = 31035, I0 = 1, R0 = 0, E0(VT) = E0(UVA), use same best fit parameters to model the epidemic for first 70 days 
