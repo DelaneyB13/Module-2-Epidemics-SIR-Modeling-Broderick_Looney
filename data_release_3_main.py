@@ -194,15 +194,15 @@ print(f"Extended simulation peak infectious count: {peak_I:.2f} on day {peak_day
 
 #Calculating Error 
 # Et = true - approximate
-true = 3294
-approximate = peak_I
+true = 3294 #found using the data from release #3, the true peak infectious count is 3294
+approximate = peak_I #the peak infectious count from the extended SEIR model simulation
 Et = true - approximate
-relative_error = abs(Et) / abs(true) * 100
+relative_error = abs(Et) / abs(true) * 100 #formula given for relative error: |Et| / |true| * 100
 print(f"Relative error of the peak infectious count: {relative_error:.2f}%")
 
-true_day = 83 
+true_day = 83 #found using the data from release #3, the true peak day is day 83
 Et_day = true_day - peak_day
-relative_error_day = abs(Et_day) / abs(true_day) * 100
+relative_error_day = abs(Et_day) / abs(true_day) * 100 #formula given for relative error: |Et| / |true| * 100
 print(f"Relative error of the peak day: {relative_error_day:.2f}%")
 #end data release 2 
 
@@ -215,6 +215,7 @@ data_3 = data_3["active reported daily cases"].tolist()
 # compare the full release #3 dataset against the SEIR model using best parameters
 model_S2, model_E2, model_I2, model_R2 = seir(121, best_beta, best_sigma, best_gamma, S0, E0, I0, R0, N, h=1)
 
+#Plotting the model predictions against the data from release #2 and release #3, showing the peak day and peak infectious population from the model on the plot for reference across the full 120 days of the epidemic, and comparing the model predictions to the observed data from both releases to evaluate how well the model captures the epidemic dynamics over time, including the timing and magnitude of the peak infectious population.
 x = np.arange(1, 123)  # Days 1 to 121
 plt.figure()
 plt.plot(x, model_I2, label="Model Infectious")
@@ -243,11 +244,13 @@ S0_VT = 31035
 E0_VT = E0
 I0_VT = 1
 R0_VT = 0
+#the values were given from the powerpoint in class 
 
-N_VT = S0_VT + E0_VT + I0_VT + R0_VT
+N_VT = S0_VT + E0_VT + I0_VT + R0_VT #changing N for model to reflect the VT student population instead of the UVA student population
 
-model_S_VT, model_E_VT, model_I_VT, model_R_VT = seir(day, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N_VT, h=1)
+model_S_VT, model_E_VT, model_I_VT, model_R_VT = seir(day, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N_VT, h=1) #running the SEIR model for the VT student population using the best fit parameters from the grid search
 
+#using the model predictions for the VT student population to plot the predicted infectious population over the first 70 days of the epidemic, which can be used to inform intervention strategies at VT by showing the expected trajectory of the epidemic in the absence of interventions and identifying when the peak infectious population is expected to occur, which can help guide timing of interventions to mitigate the spread of the virus among the VT student population.
 x = np.arange(1, 72)  # Days 1 to 71
 plt.figure()
 plt.plot(x, model_I_VT, label="Model Infectious (VT)")
@@ -258,68 +261,40 @@ plt.legend()
 plt.show()
 
 
-
 #Intervention 1: Mask Mandate - reduce beta (Transmission) by 40% vs no intervention, keeping sigma and gamma the same. Model the epidemic for 120 days to see the long-term effects of the mask mandate on the infectious population at VT.
 days_mask = 120
 model_S_VT_long, model_E_VT_long, model_I_VT_long, model_R_VT_long = seir(days_mask, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N_VT, h=1)
 
+#making sure that the model are going off of the same initial conditions at day 70 for all interventions to ensure a fair comparison of the interventions starting at the same point in the epidemic, which allows us to evaluate the relative effectiveness of each intervention in reducing the infectious population at VT over time.
 day0 = 70
 S_70 = model_S_VT_long[day0]
 E_70 = model_E_VT_long[day0]
 I_70 = model_I_VT_long[day0]
 R_70 = model_R_VT_long[day0]
 
-
+#change to beta from the mask mandate intervention, which reduces transmission by 40%, so beta is reduced to 60% of the original best beta value from the grid search, and then model the epidemic for the remaining days after day 70 to see how the mask mandate affects the trajectory of the infectious population at VT compared to the baseline scenario with no intervention.
 beta_mask = best_beta * 0.6
 days_post70 = days_mask - day0
 
-baseline_segment = model_I_VT_long[day0:days_mask+1]
 
-vaccinated = min(2000, S_70)
-effective_vaccinated = 0.9 * vaccinated
+baseline_segment = model_I_VT_long[day0:days_mask+1] #the baseline segment of the infectious population trajectory from day 70 to day 120 without any interventions, which serves as a reference point for comparing the effects of the mask mandate and other interventions on the infectious population at VT over time.
 
+
+#modeling the epidemic for the mask mandate intervention, where we use the adjusted beta value that reflects the 40% reduction in transmission due to the mask mandate, and the same sigma and gamma values from the best fit parameters, starting from the same initial conditions at day 70, to see how the mask mandate affects the trajectory of the infectious population at VT compared to the baseline scenario with no intervention and the other interventions.
+model_S_mask, model_E_mask, model_I_mask, model_R_mask = seir(days_post70, beta_mask, best_sigma, best_gamma, S_70, E_70, I_70, R_70, N_VT, h=1)
+
+
+
+#intervention 2: Vaccine Campaign - vaccinate 2000 students at day 70, with 90% vaccine efficacy, which effectively reduces the susceptible population by the number of effective vaccinations, and increases the recovered population by the same amount, while keeping the exposed and infectious populations the same at day 70. Then model the epidemic for the remaining days after day 70 to see how the vaccine campaign affects the trajectory of the infectious population at VT compared to the baseline scenario with no intervention and the mask mandate intervention.
+vaccinated = min(2000, S_70) #the number of students vaccinated at day 70, which is the minimum of 2000 or the current susceptible population at day 70 to ensure that we do not vaccinate more students than are currently susceptible in the model
+effective_vaccinated = 0.9 * vaccinated #the number of effective vaccinations, which is the number of vaccinated students multiplied by the vaccine efficacy of 90%, representing the reduction in the susceptible population due to the vaccine campaign, and the corresponding increase in the recovered population at day 70 in the SEIR model.
+
+
+#adjusting the susceptible and recovered populations at day 70 to reflect the effects of the vaccine campaign, where the susceptible population is reduced by the number of effective vaccinations, and the recovered population is increased by the same amount, while keeping the exposed and infectious populations the same at day 70 to model the impact of the vaccine campaign on the epidemic trajectory at VT starting from day 70.
 S_70_vax = S_70 - effective_vaccinated
 E_70_vax = E_70
 I_70_vax = I_70
 R_70_vax = R_70 + effective_vaccinated
-
-closure_days = 14
-beta_closure = best_beta * 0.2
-
-S_close, E_close, I_close, R_close = seir(
-    closure_days,
-    beta_closure,
-    best_sigma,
-    best_gamma,
-    S_70,
-    E_70,
-    I_70,
-    R_70,
-    N_VT,
-    h=1
-)
-
-S_84 = S_close[-1]
-E_84 = E_close[-1]
-I_84 = I_close[-1]
-R_84 = R_close[-1]
-
-days_after = days_mask - (day0 + closure_days)
-
-S_after, E_after, I_after, R_after = seir(
-    days_after,
-    best_beta,
-    best_sigma,
-    best_gamma,
-    S_84,
-    E_84,
-    I_84,
-    R_84,
-    N_VT,
-    h=1
-)
-I_school = I_close + I_after[1:]
-model_S_mask, model_E_mask, model_I_mask, model_R_mask = seir(days_post70, beta_mask, best_sigma, best_gamma, S_70, E_70, I_70, R_70, N_VT, h=1)
 
 model_S_vax, model_E_vax, model_I_vax, model_R_vax = seir(
     days_post70,
@@ -335,7 +310,53 @@ model_S_vax, model_E_vax, model_I_vax, model_R_vax = seir(
 )
 
 
+#intervention 3: School Closure - close schools for 2 weeks starting at day 70, which reduces the transmission rate (beta) by 80% during the closure period, and then model the epidemic for the remaining days after day 70 to see how the school closure affects the trajectory of the infectious population at VT compared to the baseline scenario with no intervention, the mask mandate intervention, and the vaccine campaign intervention.
+closure_days = 14 #the duration of the school closure intervention, which is 14 days (2 weeks) starting from day 70, during which the transmission rate (beta) is reduced by 80% to model the impact of the school closure on the epidemic trajectory at VT during that period, and then returns to the original beta value after the closure period ends to model the subsequent trajectory of the infectious population at VT after the schools reopen.
+beta_closure = best_beta * 0.2 #the adjusted beta value during the school closure period, which is 20% of the original best beta value from the grid search to reflect the 80% reduction in transmission due to the school closure, and then model the epidemic for the closure period and the subsequent days after day 70 to see how the school closure affects the trajectory of the infectious population at VT compared to the other interventions and the baseline scenario with no intervention.
 
+
+#modeling the epidemic for the school closure intervention, where we first model the epidemic for the closure period with the reduced beta value to see how the school closure affects the infectious population at VT during that period, and then model the epidemic for the remaining days after day 70 with the original best beta value to see how the infectious population at VT evolves after the schools reopen, allowing us to evaluate the overall impact of the school closure intervention on the epidemic trajectory at VT compared to the other interventions and the baseline scenario with no intervention.
+S_close, E_close, I_close, R_close = seir(
+    closure_days,
+    beta_closure,
+    best_sigma,
+    best_gamma,
+    S_70,
+    E_70,
+    I_70,
+    R_70,
+    N_VT,
+    h=1
+)
+
+#after modeling the epidemic for the school closure intervention, we take the final values of the susceptible, exposed, infectious, and recovered populations at the end of the closure period (day 84) as the new initial conditions for modeling the epidemic for the remaining days after day 70 with the original best beta value to see how the infectious population at VT evolves after the schools reopen, allowing us to evaluate the overall impact of the school closure intervention on the epidemic trajectory at VT compared to the other interventions and the baseline scenario with no intervention.
+S_84 = S_close[-1]
+E_84 = E_close[-1]
+I_84 = I_close[-1]
+R_84 = R_close[-1]
+
+#modeling the epidemic for the remaining days after day 70 with the original best beta value after the school closure period ends, using the final values from the school closure model as the new initial conditions, to see how the infectious population at VT evolves after the schools reopen, allowing us to evaluate the overall impact of the school closure intervention on the epidemic trajectory at VT compared to the other interventions and the baseline scenario with no intervention.
+days_after = days_mask - (day0 + closure_days)
+
+S_after, E_after, I_after, R_after = seir(
+    days_after,
+    best_beta,
+    best_sigma,
+    best_gamma,
+    S_84,
+    E_84,
+    I_84,
+    R_84,
+    N_VT,
+    h=1
+)
+
+I_school = I_close + I_after[1:] #the total infectious population trajectory for the school closure intervention, which combines the infectious population during the closure period (I_close) with the infectious population after the closure period ends (I_after) to show the overall impact of the school closure intervention on the infectious population at VT over time compared to the other interventions and the baseline scenario with no intervention.
+
+
+
+
+#Finally, we can plot the infectious population trajectories for the baseline scenario with no intervention, the mask mandate intervention, the vaccine campaign intervention, and the school closure intervention starting from day 70 to day 120 to visually compare the effects of each intervention on the trajectory of the infectious population at VT over time, which can help inform decision-making about which interventions may be most effective in mitigating the spread of the virus among the VT student population.
 
 x = np.arange(day0, days_mask + 1)  # Days 70 to 120
 plt.figure()
