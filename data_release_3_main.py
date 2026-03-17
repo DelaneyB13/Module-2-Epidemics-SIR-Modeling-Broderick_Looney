@@ -239,3 +239,20 @@ plt.legend()
 plt.show()
 
 #For recommending interventions at VT: VT student population as S0 = 31035, I0 = 1, R0 = 0, E0(VT) = E0(UVA), use same best fit parameters to model the epidemic for first 70 days 
+S0_VT = 31035
+E0_VT = E0
+I0_VT = 1
+R0_VT = 0
+model_S_VT, model_E_VT, model_I_VT, model_R_VT = seir(day, best_beta, best_sigma, best_gamma, S0_VT, E0_VT, I0_VT, R0_VT, N, h=1)
+
+x = np.arange(1, 72)  # Days 1 to 71
+plt.figure()
+plt.plot(x, model_I_VT, label="Model Infectious (VT)")
+plt.xlabel("Day")
+plt.ylabel("Infectious Population")
+plt.title("Predicted Infectious Model for VT Student Population")
+plt.legend()
+plt.show()
+
+
+
